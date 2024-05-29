@@ -67,7 +67,7 @@ fun MainScreen(onNavigateToSecondScreen: () -> Unit) {
             Text(
                 text = "Receba as melhores dicas de dietas e exercícios de acordo com o seu perfil.",
                 modifier = Modifier.padding(bottom = 16.dp),
-                color = Color.Black
+                color = Color.White
             )
             Button(
                 onClick = onNavigateToSecondScreen,
@@ -81,6 +81,9 @@ fun MainScreen(onNavigateToSecondScreen: () -> Unit) {
 
 @Composable
 fun SecondScreen(onNavigateBack: () -> Unit) {
+    var altura by remember { mutableStateOf("") }
+    var peso by remember { mutableStateOf("") }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -88,8 +91,42 @@ fun SecondScreen(onNavigateBack: () -> Unit) {
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "Bem-vindo à segunda tela!", color = Color.Black)
+            Text(text = "Informe os dados abaixo:", color = Color.Black)
             Spacer(modifier = Modifier.height(16.dp))
+
+            // Campo de entrada para altura
+            OutlinedTextField(
+                value = altura,
+                onValueChange = { altura = it },
+                label = { Text("Altura (cm)") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp)
+            )
+
+            // Campo de entrada para peso
+            OutlinedTextField(
+                value = peso,
+                onValueChange = { peso = it },
+                label = { Text("Peso (kg)") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp)
+            )
+
+            // Botão para calcular IMC
+            Button(onClick = {
+                // Aqui você pode calcular o IMC utilizando os valores de altura e peso
+                val alturaFloat = altura.toFloatOrNull() ?: 0f
+                val pesoFloat = peso.toFloatOrNull() ?: 0f
+                val imc = pesoFloat / (alturaFloat / 100 * alturaFloat / 100)
+            }) {
+                Text(text = "Calcular")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Botão para voltar à tela anterior
             Button(onClick = onNavigateBack) {
                 Text(text = "Voltar")
             }
